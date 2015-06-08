@@ -1,0 +1,12 @@
+development:
+  sessions:
+    default:
+      database: mindpin_buckets_dev
+      hosts:
+        - localhost:27017
+test:
+  sessions:
+    default:
+      database: mindpin_buckets_test
+      hosts:
+        - localhost:27017
