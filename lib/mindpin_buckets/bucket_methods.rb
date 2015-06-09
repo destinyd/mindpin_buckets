@@ -27,6 +27,9 @@ module MindpinBuckets
           raise "must be array, string or symbol"
         end
 
+        field :name, type: String
+        field :desc, type: String
+
         self.collect.each do |sym|
           has_and_belongs_to_many sym.to_s.pluralize
         end

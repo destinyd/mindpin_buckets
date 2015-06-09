@@ -113,6 +113,14 @@ describe 'bucket_methods' do
       album.respond_to?(:pictures).should == true
     end
 
+    it do
+      album.respond_to?(:name).should == true
+    end
+
+    it do
+      album.respond_to?(:desc).should == true
+    end
+
     it "#add_resource" do
       picture = Picture.create
       album.pictures.should_not be_any
