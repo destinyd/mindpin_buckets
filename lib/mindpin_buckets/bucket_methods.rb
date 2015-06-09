@@ -22,6 +22,7 @@ module MindpinBuckets
           #has_and_belongs_to_many self.collect.to_s.pluralize
           self.collect = [self.collect.to_s]
         when "Array"
+          self.collect = self.collect.map(&:to_s)
         else
           raise "must be array, string or symbol"
         end
@@ -84,7 +85,7 @@ module MindpinBuckets
           if resources.class.name == "Array"
             resources.compact!
             resources.uniq!
-            if !resources.blank? and include_resources?(resources)
+            if !resources.blank?
               resources.each do |resource|
                 remove_resource(resource)
               end

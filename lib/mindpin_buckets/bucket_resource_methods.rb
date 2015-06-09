@@ -49,7 +49,7 @@ module MindpinBuckets
         define_method :remove_from_buckets do |resources|
           if resources.class.name == "Array"
             resources.each do |resource|
-              resource.remove_resource(self)
+              remove_from_bucket(resource)
             end
             return true
           end

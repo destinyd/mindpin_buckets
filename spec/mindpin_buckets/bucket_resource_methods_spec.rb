@@ -56,6 +56,8 @@ describe 'bucket_resource_methods' do
       book1.remove_from_buckets([folder1]).should == true
       folder1.include_resource?(book1).should == false
       book1.remove_from_buckets([ folder2]).should == true
+
+      # 没有则忽略
       book1.remove_from_buckets([folder1, folder2]).should == true
     end
   end
