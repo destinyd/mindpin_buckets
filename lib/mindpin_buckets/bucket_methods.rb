@@ -30,6 +30,8 @@ module MindpinBuckets
         field :name, type: String
         field :desc, type: String
 
+        belongs_to :user
+
         self.collect.each do |sym|
           has_and_belongs_to_many sym.to_s.pluralize
         end
