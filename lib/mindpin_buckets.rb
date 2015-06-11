@@ -1,16 +1,18 @@
+require 'active_support/dependencies'
+
 require "mindpin_buckets/bucket_methods"
 require "mindpin_buckets/bucket_resource_methods"
 require "mindpin_buckets/version"
 
 module MindpinBuckets
-  #class << self
-    #def config(&block)
-      ## 读取配置
-      #MindpinBuckets::Config.config(&block)
-    #end
+  # Our host application root path
+  # We set this when the engine is initialized
+  mattr_accessor :app_root
 
-    #def mindpin_buckets_config
-      #self.instance_variable_get(:@mindpin_buckets_config) || {}
-    #end
-  #end
+  # Yield self on setup for nice config blocks
+  def self.setup
+    yield self
+  end
 end
+
+require 'mindpin_buckets/rails'

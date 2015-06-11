@@ -3,6 +3,7 @@ source 'http://ruby.taobao.org'
 
 gemspec #name: "mindpin_buckets"
 
+gem "rails", "~> 4.2.0"
 gem "mongoid", "~> 4.0.0"
 
 group :test do
