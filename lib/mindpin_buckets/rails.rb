@@ -3,6 +3,7 @@
 
 module MindpinBuckets
   class Engine < ::Rails::Engine
+    isolate_namespace MindpinBuckets
     #initialize "mindpin_buckets.load_app_instance_data" do |app|
       #MindpinBuckets.setup do |config|
         #config.app_root = app.root
