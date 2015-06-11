@@ -9,7 +9,7 @@ class MindpinBuckets::BucketsController < ::ApplicationController
         type: get_bucket_type,
         result: @buckets.map do |bucket|
           {
-            id: bucket.id,
+            id: bucket.id.to_s,
             name: bucket.name,
             desc: bucket.desc
           }
@@ -28,7 +28,7 @@ class MindpinBuckets::BucketsController < ::ApplicationController
       render json: {
         type: get_bucket_type,
         result: {
-          id: @bucket.id,
+          id: @bucket.id.to_s,
           name: @bucket.name,
           desc: @bucket.desc
         }
@@ -44,7 +44,6 @@ class MindpinBuckets::BucketsController < ::ApplicationController
   end
 
   def bucket_start
-    #get_bucket_type.humanize.constantize
     current_user.send(get_bucket_type.downcase.pluralize)
   end
 

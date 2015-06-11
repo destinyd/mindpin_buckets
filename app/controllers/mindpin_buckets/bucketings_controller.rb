@@ -8,12 +8,12 @@ class MindpinBuckets::BucketingsController < ::ApplicationController
       resource_id = params[:resource_id]
 
       @bucket = bucket_start.find bucket_id
-      @resource = get_resource_type.humanize.constantize.find resource_id
+      @resource = resource_start.find resource_id
       if @resource.add_to_bucket @bucket
         render json: {
           type: type, 
           result: {
-            id: @bucket.id,
+            id: @bucket.id.to_s,
             name: @bucket.name,
             desc: @bucket.desc
           }
@@ -37,7 +37,7 @@ class MindpinBuckets::BucketingsController < ::ApplicationController
         render json: {
           type: type, 
           result: {
-            id: @bucket.id,
+            id: @bucket.id.to_s,
             name: @bucket.name,
             desc: @bucket.desc
           }
@@ -56,7 +56,6 @@ class MindpinBuckets::BucketingsController < ::ApplicationController
   end
 
   def bucket_start
-    #get_bucket_type.humanize.constantize
     current_user.send(:get_bucket_type.downcase.pluralize)
   end
 
