@@ -33,19 +33,19 @@ Or install it yourself as:
 **coffeescript**使用示例
 ```coffeescript
 # example
-class @CustomProgress extends MindpinBucketsProgress
+class @CustomAdapter extends MindpinBucketsAdapter
   constructor: ()->
 
   get_buckets_success: (buckets) ->
     alert(buckets)
 
-buckets = new MindpinBuckets("",new CustomProgress())
+buckets = new MindpinBuckets("",new CustomAdapter())
 buckets.buckets("folder")
 ```
 
 ## Contributing
 
-1. Fork it ( https://github.com/[my-github-username]/mindpin_buckets/fork )
+1. Fork it ( https://github.com/destinyd/mindpin_buckets/fork )
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)

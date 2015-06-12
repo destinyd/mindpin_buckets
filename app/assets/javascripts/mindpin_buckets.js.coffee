@@ -7,7 +7,7 @@ class @MindpinBuckets
       @$path_fix = ""
     @buckets_path = @$path_fix + "/buckets"
     @bucketings_path = @$path_fix + "/bucketings"
-    @$progress ||= new MindpinBucketsProgress(@)
+    @$progress ||= new MindpinBucketsAdapter(@)
 
   buckets: (bucket_type) ->
     jQuery.ajax
@@ -86,10 +86,8 @@ class @MindpinBuckets
 
   失败均为500，结构也一样，可以统一
 ###
-class @MindpinBucketsProgress
+class @MindpinBucketsAdapter
   constructor: (@mindpin_buckets) ->
-    #console.log 'MindpinBucketsProgress'
-    #console.log @mindpin_buckets
 
   get_buckets_success: (buckets) ->
     console.log 'get_buckets_success'
@@ -112,11 +110,11 @@ class @MindpinBucketsProgress
     console.log error
 
 # example 
-#class @CustomProgress extends MindpinBucketsProgress
+#class @CustomAdapter extends MindpinBucketsAdapter
   #constructor: ()->
 
   #get_buckets_success: (buckets) ->
     #alert(buckets)
 #
-#buckets = new MindpinBuckets("",new CustomProgress())
+#buckets = new MindpinBuckets("",new CustomAdapter())
 #buckets.buckets("folder")
