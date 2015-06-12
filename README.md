@@ -20,7 +20,28 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+**config/routes.rb**添加
+```ruby
+  mount MindpinBuckets::Engine => '/'
+```
+
+**app/assets/javascripts/application.js**添加
+```javascript
+//= require mindpin_buckets
+```
+
+**coffeescript**使用示例
+```coffeescript
+# example
+class @CustomProgress extends MindpinBucketsProgress
+  constructor: ()->
+
+  get_buckets_success: (buckets) ->
+    alert(buckets)
+
+buckets = new MindpinBuckets("",new CustomProgress())
+buckets.buckets("folder")
+```
 
 ## Contributing
 
