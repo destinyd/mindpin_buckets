@@ -3,7 +3,7 @@ class MindpinBuckets::BucketingsController < ::ApplicationController
   before_filter :authenticate_user!
 
   def create
-    begin 
+    begin
       bucket_id = params[:bucket_id]
       resource_id = params[:resource_id]
 
@@ -11,7 +11,7 @@ class MindpinBuckets::BucketingsController < ::ApplicationController
       @resource = resource_start.find resource_id
       if @resource.add_to_bucket @bucket
         render json: {
-          type: type, 
+          type: get_bucket_type, 
           result: {
             id: @bucket.id.to_s,
             name: @bucket.name,
@@ -19,7 +19,7 @@ class MindpinBuckets::BucketingsController < ::ApplicationController
           }
         }
       else
-        render json: {error: "remove failure"}, status: 500
+        render json: {error: "already added"}, status: 500
       end
     rescue
       render json: {error: "unknowns"}, status: 500
@@ -35,7 +35,7 @@ class MindpinBuckets::BucketingsController < ::ApplicationController
       @resource = resource_start.find resource_id
       if @resource.remove_from_bucket @bucket
         render json: {
-          type: type, 
+          type: get_bucket_type, 
           result: {
             id: @bucket.id.to_s,
             name: @bucket.name,
@@ -43,7 +43,7 @@ class MindpinBuckets::BucketingsController < ::ApplicationController
           }
         }
       else
-        render json: {error: "remove failure"}, status: 500
+        render json: {error: "already removed"}, status: 500
       end
     rescue
       render json: {error: "unknowns"}, status: 500
@@ -56,7 +56,7 @@ class MindpinBuckets::BucketingsController < ::ApplicationController
   end
 
   def bucket_start
-    current_user.send(:get_bucket_type.downcase.pluralize)
+    current_user.send(get_bucket_type.downcase.pluralize)
   end
 
   def get_resource_type
