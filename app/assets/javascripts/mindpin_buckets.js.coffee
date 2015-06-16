@@ -9,9 +9,9 @@ class @MindpinBuckets
     @bucketings_path = @$path_fix + "/bucketings"
     @$progress ||= new MindpinBucketsAdapter(@)
 
-  buckets: (bucket_type) ->
+  buckets: (bucket_type, resource_type, resource_id) ->
     jQuery.ajax
-      url: "#{@buckets_path}?type=#{bucket_type}"
+      url: "#{@buckets_path}?bucket_type=#{bucket_type}&resource_type=#{resource_type}&resource_id=#{resource_id}"
       method: "GET"
       success: (res) =>
         console.log "buckets success"
@@ -26,7 +26,7 @@ class @MindpinBuckets
       url: @buckets_path
       method: "POST"
       data: 
-        type: bucket_type
+        bucket_type: bucket_type
         name: name
         desc: desc
       success: (res) =>

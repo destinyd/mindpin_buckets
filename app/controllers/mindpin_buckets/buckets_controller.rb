@@ -11,7 +11,8 @@ class MindpinBuckets::BucketsController < ::ApplicationController
           {
             id: bucket.id.to_s,
             name: bucket.name,
-            desc: bucket.desc
+            desc: bucket.desc,
+            added: get_resource ? bucket.include_resource?(get_resource) : false
           }
         end
       }
@@ -40,7 +41,7 @@ class MindpinBuckets::BucketsController < ::ApplicationController
 
   protected
   def get_bucket_type
-    params[:type]
+    params[:bucket_type]
   end
 
   def bucket_start
@@ -49,5 +50,10 @@ class MindpinBuckets::BucketsController < ::ApplicationController
 
   def collection
     bucket_start.all
+  end
+
+  def get_resource
+    return nil if params[:resource_type].blank? or params[:resource_id].blank?
+    @resource ||= params[:resource_type].humanize.constantize.find params[:resource_id]
   end
 end
