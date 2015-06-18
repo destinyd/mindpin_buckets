@@ -20,28 +20,8 @@ Or install it yourself as:
 
 ## Usage
 
-**config/routes.rb**添加
-```ruby
-  mount MindpinBuckets::Engine => '/'
-```
-
-**app/assets/javascripts/application.js**添加
-```javascript
-//= require mindpin_buckets
-```
-
-**coffeescript**使用示例
-```coffeescript
-# example
-class @CustomAdapter extends MindpinBucketsAdapter
-  constructor: ()->
-
-  get_buckets_success: (buckets) ->
-    alert(buckets)
-
-buckets = new MindpinBuckets("",new CustomAdapter())
-buckets.buckets("folder")
-```
+请参看
+https://github.com/destinyd/mindpin_buckets_demo
 
 ## Contributing
 
