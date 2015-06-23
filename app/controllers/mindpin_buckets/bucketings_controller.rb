@@ -2,25 +2,54 @@ class MindpinBuckets::BucketingsController < ::ApplicationController
   skip_before_filter :verify_authenticity_token
   before_filter :authenticate_user!
 
+  def index
+    begin 
+      bucket_ids = params[:bucket_ids]
+      resource_ids = params[:resource_ids]
+
+      @buckets = bucket_start.find bucket_ids
+      @resources = resource_start.find resource_ids
+      render json: {
+        action: "replace_buckets",
+        result: {
+          resource_ids: resource_ids,
+          buckets: @buckets.map do |bucket|
+            {
+              id: bucket.id.to_s,
+              name: bucket.name,
+              desc: bucket.desc
+            }
+          end
+        }
+      }
+    rescue
+      render json: {error: "unknowns"}, status: 500
+    end
+  end
+
   def create
     begin
-      bucket_id = params[:bucket_id]
-      resource_id = params[:resource_id]
+      bucket_ids = params[:bucket_ids]
+      resource_ids = params[:resource_ids]
 
-      @bucket = bucket_start.find bucket_id
-      @resource = resource_start.find resource_id
-      if @resource.add_to_bucket @bucket
-        render json: {
-          type: get_bucket_type, 
-          result: {
-            id: @bucket.id.to_s,
-            name: @bucket.name,
-            desc: @bucket.desc
-          }
-        }
-      else
-        render json: {error: "already added"}, status: 500
+      @buckets = bucket_start.find bucket_ids
+      @resources = resource_start.find resource_ids
+      @resources.each do |resource|
+        resource.add_to_buckets @buckets
       end
+      render json: {
+        action: "add_to",
+        result: {
+          resource_ids: resource_ids,
+          buckets: @buckets.map do |bucket|
+            {
+              id: bucket.id.to_s,
+              name: bucket.name,
+              desc: bucket.desc
+            }
+          end
+        }
+      }
     rescue
       render json: {error: "unknowns"}, status: 500
     end
@@ -28,23 +57,27 @@ class MindpinBuckets::BucketingsController < ::ApplicationController
 
   def destroy
     begin 
-      bucket_id = params[:bucket_id]
-      resource_id = params[:resource_id]
+      bucket_ids = params[:bucket_ids]
+      resource_ids = params[:resource_ids]
 
-      @bucket = bucket_start.find bucket_id
-      @resource = resource_start.find resource_id
-      if @resource.remove_from_bucket @bucket
-        render json: {
-          type: get_bucket_type, 
-          result: {
-            id: @bucket.id.to_s,
-            name: @bucket.name,
-            desc: @bucket.desc
-          }
-        }
-      else
-        render json: {error: "already removed"}, status: 500
+      @buckets = bucket_start.find bucket_ids
+      @resources = resource_start.find resource_ids
+      @resources.each do |resource|
+        resource.remove_from_buckets @buckets
       end
+      render json: {
+        action: "remove_from",
+        result: {
+          resource_ids: resource_ids,
+          buckets: @buckets.map do |bucket|
+            {
+              id: bucket.id.to_s,
+              name: bucket.name,
+              desc: bucket.desc
+            }
+          end
+        }
+      }
     rescue
       render json: {error: "unknowns"}, status: 500
     end

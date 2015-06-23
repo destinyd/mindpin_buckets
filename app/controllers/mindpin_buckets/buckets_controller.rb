@@ -4,18 +4,40 @@ class MindpinBuckets::BucketsController < ::ApplicationController
 
   def index
     begin 
-      @buckets = collection
-      render json: {
-        type: get_bucket_type,
-        result: @buckets.map do |bucket|
-          {
-            id: bucket.id.to_s,
-            name: bucket.name,
-            desc: bucket.desc,
-            added: get_resource ? bucket.include_resource?(get_resource) : false
+      buckets = collection
+      if params[:resource_ids].blank?
+        render json: {
+          action: "get_buckets",
+          result: buckets.map{ |bucket|
+            {
+              id: bucket.id.to_s,
+              name: bucket.name,
+              desc: bucket.desc
+            }
           }
-        end
-      }
+        }
+      else
+        resource_ids =  params[:resource_ids]
+        result = {
+          action: "get_resources_buckets",
+          result: resource_ids.map do |resource_id|
+            {
+              id: resource_id, 
+              buckets:
+              buckets.map do |bucket|
+                {
+                  id: bucket.id.to_s,
+                  name: bucket.name,
+                  desc: bucket.desc,
+                  added: get_resource(resource_id) ? bucket.include_resource?(get_resource(resource_id)) : false
+                }
+              end
+            }
+          end
+        }
+
+        render json: result
+      end
     rescue
       render json: {error: "unknowns"}, status: 500
     end
@@ -27,7 +49,7 @@ class MindpinBuckets::BucketsController < ::ApplicationController
       desc = params[:desc]
       @bucket = bucket_start.create name: name, desc: desc
       render json: {
-        type: get_bucket_type,
+        action: "create_bucket",
         result: {
           id: @bucket.id.to_s,
           name: @bucket.name,
@@ -52,8 +74,8 @@ class MindpinBuckets::BucketsController < ::ApplicationController
     bucket_start.all
   end
 
-  def get_resource
-    return nil if params[:resource_type].blank? or params[:resource_id].blank?
-    @resource ||= params[:resource_type].humanize.constantize.find params[:resource_id]
+  def get_resource(resource_id)
+    return nil if params[:resource_type].blank?
+    params[:resource_type].humanize.constantize.find resource_id
   end
 end
