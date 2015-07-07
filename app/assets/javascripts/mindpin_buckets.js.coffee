@@ -88,7 +88,6 @@ class @MindpinBuckets
         if res['error']
           @hook.error(res.error)
         else
-          window.res = res
           if res['action'] == 'get_buckets'
             @hook.get_all_buckets_success(res.result)
           else if res['action'] == 'get_resources_buckets'
